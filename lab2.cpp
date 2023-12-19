@@ -5,7 +5,7 @@
 
 Particle p[MAXP];
 
-Ociste	ociste = { 0.0f, 0.0f, 3.5f };
+Ociste	ociste = { 1.0f, 0.0f, 4.5f };
 int w, h;
 
 void renderScene()

@@ -32,7 +32,7 @@ public:
     void process();
 };
 
-float sigm(float x) {
+float sigm3(float x) {
     return 1/(1 + exp(-x))/(1 + exp(-x))/(1 + exp(-x));
 }
 
@@ -42,7 +42,7 @@ Particle::Particle()
     float fi = 2.*3.14* ((float) rand() / (RAND_MAX));
     pos = {r * cosf(fi), 0, r * sinf(fi)};
     speed = {0, 0.008, 0};
-    lifespan = 445 / sigm(r) * ((float) rand() / (RAND_MAX) / 2 + 0.5);
+    lifespan = 400 / sigm3(r) * ((float) rand() / (RAND_MAX) / 2 + 0.5);
     age = 0;
     if(r > 0.7)
         color = {1, 0, 0, 0.3};
@@ -59,8 +59,13 @@ void Particle::process() {
     pos.y += speed.y;
     pos.z += speed.z + 0.01 * (2*(float) rand() / (RAND_MAX) - 1);
     age += 20;
+    if(age > 0.65 * lifespan) {
+        speed.x = - 0.01 * pos.x;
+        speed.z = - 0.01 * pos.z;
+        speed.y *= 1.001;
+    }
     if(age > 0.9 * lifespan)
-        color = {0.6, 0.65, 0.6, 0.3};
+        color = {0.5, 0.6, 0.5, 0.3};
     else if(age * 3 > 2 * lifespan)
         color = {1, 0, 0, 0.3};
     else if(age * 3 > lifespan && color.g == 1)
