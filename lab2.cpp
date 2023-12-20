@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include<ctime>
+#include<SOIL/SOIL.h>
 #include "particle.hpp"
-#define MAXP 50000
+#define MAXP 55000
 
 Particle p[MAXP];
+GLuint tex2d;
 
 Ociste	ociste = { 1.0f, 0.0f, 4.5f };
 int w, h;
@@ -78,5 +80,12 @@ int main(int argc, char ** argv)
     glutReshapeFunc(reshape);
     glutTimerFunc(20, animate, 0);
     glutKeyboardFunc(myKeyboard);
+    // tex2d = SOIL_load_OGL_texture
+    // (
+    //     "iskrica.tga",
+    //     SOIL_LOAD_AUTO,
+    //     SOIL_CREATE_NEW_ID,
+    //     SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+    // );
     glutMainLoop();
 }
