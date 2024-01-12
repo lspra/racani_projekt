@@ -1,5 +1,7 @@
 #include <stdlib.h>
-#include<ctime>
+#include <GL/glew.h>
+#include <ctime>
+#include <fstream>
 #include "particle.hpp"
 #define MAXP 20000
 
@@ -11,6 +13,31 @@ glm::vec3 wind_dir;
 Particle p[MAXP];
 int intensity = MAX_INTENSITY;
 int time_ = 0;
+
+GLuint loadShader(GLenum type)
+{
+    std::ifstream reader;
+    if(type == GL_FRAGMENT_SHADER)
+        reader.open("fragmentShader.glsl");
+    else
+        reader.open("vertexShader.glsl");
+    std::string source((std::istreambuf_iterator<char>(reader)),
+                       std::istreambuf_iterator<char>());
+    const char* shaderSource = source.c_str();
+    
+    GLuint shaderId = glCreateShader(type);
+    glShaderSource(shaderId, 1, &shaderSource, 0);
+    glCompileShader(shaderId);
+    int result;
+    glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
+    if(result == GL_FALSE) {
+        GLint maxLength = 0;
+        glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
+        glDeleteShader(shaderId); // Don't leak the shader.
+        exit(1);
+    }
+    return shaderId;
+}
 
 void renderScene()
 {
@@ -131,6 +158,20 @@ int main(int argc, char ** argv)
     glutMotionFunc(motionCallback);
 
     glutPassiveMotionFunc(motionCallback);
+
+    glewInit();
+    GLuint vertex = loadShader(GL_VERTEX_SHADER);
+    GLuint fragment = loadShader(GL_FRAGMENT_SHADER);
+    GLuint program = glCreateProgram();
+
+    // Attach our shaders to our program
+    glAttachShader(program, vertex);
+    glAttachShader(program, fragment);
+
+    // Link our program
+    glLinkProgram(program);
+    glUseProgram(program);
+
     //tex2d = SOIL_load_OGL_texture
     //(
     //    "iskrica.tga",

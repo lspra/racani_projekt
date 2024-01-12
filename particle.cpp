@@ -81,13 +81,14 @@ void Particle::draw(Ociste o) {
     glEnable(GL_BLEND);
     glBegin(GL_QUADS);
     //glTexCoord2d(1, 1);
-    glVertex3f(pos.x-0.007f, pos.y-0.007f, pos.z+0.0f);
+    float size = 0.007f;
+    glVertex3f(pos.x-size, pos.y-size, pos.z+0.0f);
     //glTexCoord2d(1, 0);
-    glVertex3f(pos.x+0.007f, pos.y-0.007f, pos.z+0.0f);
+    glVertex3f(pos.x+size, pos.y-size, pos.z+0.0f);
     //glTexCoord2d(0, 0);
-    glVertex3f(pos.x+0.007f, pos.y+0.007f, pos.z+0.0f);
+    glVertex3f(pos.x+size, pos.y+size, pos.z+0.0f);
     //glTexCoord2d(0, 1);
-    glVertex3f(pos.x-0.007f, pos.y+0.007f, pos.z+0.0f);
+    glVertex3f(pos.x-size, pos.y+size, pos.z+0.0f);
     glEnd();
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
