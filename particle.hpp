@@ -1,24 +1,14 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
+//#define GLM_FORCE_SWIZZLE
+#include <glm/glm.hpp>
+#define MAX_INTENSITY 20
 
+typedef glm::vec3 Ociste;
+typedef glm::vec3 vert3d;
 
-typedef struct _Ociste {
-    GLfloat	x;
-    GLfloat	y;
-    GLfloat	z;
-} Ociste;
-
-typedef struct
-{
-    GLfloat x, y, z;
-} vert3d;
-
-typedef struct
-{
-    GLfloat r, g, b, a;
-} rgba;
-
+typedef glm::vec4 rgba;
 class Particle
 {
 private:
@@ -27,8 +17,9 @@ public:
     int lifespan, age;
     rgba color = {1, 1, 0, 0.45};
     Particle();
+    Particle(int intensity);
     ~Particle();
     void draw(Ociste o);
-    void process();
+    void process(vert3d wind_dir);
 };
 
