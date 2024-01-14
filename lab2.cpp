@@ -8,11 +8,12 @@
 GLuint tex2d;
 
 Ociste	ociste = { 0.4f, 0.0f, 1.8f }, glediste = {0.0f, 0.0f, 0.0f};
-int w, h;
+float w, h;
 glm::vec3 wind_dir;
 Particle p[MAXP];
 int intensity = MAX_INTENSITY;
 int time_ = 0;
+GLint utime;
 
 GLuint loadShader(GLenum type)
 {
@@ -41,12 +42,16 @@ GLuint loadShader(GLenum type)
 
 void renderScene()
 {
-    for(int i = 0; i <MAXP; i++) {
-        if(p[i].lifespan > p[i].age)
-            p[i].draw(ociste);
-        else
-            p[i] = Particle(intensity);
-    }
+    static float vtime = 0.0f;
+    static int frame = 0;
+    vtime += 0.16f;
+    glUniform1f(utime, vtime);
+    glBegin(GL_QUADS);
+    glVertex2f(0.0f, 0.0f);
+    glVertex2f(w, 0.0f);
+    glVertex2f(0.0f, h);
+    glVertex2f(w, h);
+    glEnd();
 }
 
 void animate(int value)
@@ -171,6 +176,7 @@ int main(int argc, char ** argv)
     // Link our program
     glLinkProgram(program);
     glUseProgram(program);
+    utime = glGetUniformLocation(program, "time");
 
     //tex2d = SOIL_load_OGL_texture
     //(
