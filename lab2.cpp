@@ -40,14 +40,18 @@ GLuint loadShader(GLenum type)
 void renderScene()
 {
     static float vtime = 0.0f;
-    static int frame = 0;
     vtime += 0.16f;
     glUniform1f(utime, vtime);
+    auto r = [](){ return (float) rand() / (RAND_MAX); };
+    static float r1, r2, r3, r4;
+    if(sin(vtime) < 0.0f && sin(vtime) > -0.2f) {
+        r1 = r(); r2 = r(); r3 = r(); r4 = r();
+    }
     glBegin(GL_QUADS);
-    glVertex2f(0.0f, 0.0f);
-    glVertex2f(w, 0.0f);
-    glVertex2f(0.0f, h);
-    glVertex2f(w, h);
+    glVertex3f(0.0f, 0.0f, r1);
+    glVertex3f(w, 0.0f, r2);
+    glVertex3f(0.0f, h, r3);
+    glVertex3f(w, h, r4);
     glEnd();
 }
 
