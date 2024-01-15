@@ -4,6 +4,7 @@
 #include <fstream>
 #include <GL/glut.h>
 #include <glm/glm.hpp>
+#include <vector>
 #define MAXP 20000
 
 GLuint tex2d;
@@ -31,9 +32,15 @@ GLuint loadShader(GLenum type)
     if(result == GL_FALSE) {
         GLint maxLength = 0;
         glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
+
+	    std::vector<GLchar> infoLog(maxLength);
+	    glGetShaderInfoLog(shaderId, maxLength, &maxLength, &infoLog[0]);
+        for(int i = 0; i < infoLog.size(); i++)
+            printf("%c", infoLog[i]);
         glDeleteShader(shaderId); // Don't leak the shader.
         exit(1);
     }
+    
     return shaderId;
 }
 
@@ -115,6 +122,7 @@ int main(int argc, char ** argv)
     // Link our program
     glLinkProgram(program);
     glUseProgram(program);
+    
     utime = glGetUniformLocation(program, "time");
 
     glutMainLoop();
