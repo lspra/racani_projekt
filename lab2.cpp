@@ -99,6 +99,8 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY)
 
 int main(int argc, char ** argv)
 {
+    float windIntensity = 2.3;
+    scanf("%f", &windIntensity);
     float bmin[3], bmax[3];
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE);
@@ -124,6 +126,8 @@ int main(int argc, char ** argv)
     glUseProgram(program);
     
     utime = glGetUniformLocation(program, "time");
+    GLint wind = glGetUniformLocation(program, "wind");
+    glUniform1f(wind, windIntensity);
 
     glutMainLoop();
 }

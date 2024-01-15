@@ -2,6 +2,7 @@
 out vec4 FragColor;
 in vec4 pos;
 uniform float time;
+uniform float wind;
 
 float circle(vec2 p, vec2 center) {
     return (abs(p.x) - center.x)*(abs(p.x) - center.x) + (p.y - center.y)*(p.y - center.y);
@@ -76,7 +77,10 @@ float quadrat(vec2 p) {
 
 void main()
 {
-    FragColor = vec4(0.0, 0.0f, 0.0f, 1.0f);
+    vec2 pos = pos.xy;
+    if(wind != 0)
+        pos = vec2(pos.x + 0.12 * pos.y * (sin(0.03 * time) + 0.25* sin(0.07 * time + 17)) * wind, pos.y);
+    FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     float s = smoke(pos.xy + vec2(0.0, -0.15), 0.02, 0.2 * abs(sin(0.2*time)));
     if(pos.y > 0.0f && s < 0 && quadrat(pos.xy) < 0) {
         FragColor = vec4(0.1 + 0.1/s, 0.11+ 0.1/s, 0.1+ 0.1/s, 0.5);
